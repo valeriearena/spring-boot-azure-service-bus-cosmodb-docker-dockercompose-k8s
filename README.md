@@ -1,5 +1,5 @@
-# banyan-springboot
-Repository for Spring Boot POCs.
+# spring-boot-azure-service-bus-cosmodb
+Spring Boot app that implements Spring REST controllers and WebClient and integrates with Azure Service Bus and Cosmos DB with MongoDB API. Includes a script for deploying to DevSpaces.
 
 # Usage
 * When the following curl is executed: 
