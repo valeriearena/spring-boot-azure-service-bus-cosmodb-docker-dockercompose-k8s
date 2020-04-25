@@ -1,0 +1,16 @@
+version: '3'
+services:
+  moduleA:
+    image: modulea
+    container_name: modulea_container
+    ports:
+      - '8080:8080'
+    env_file:
+      - '${HOME}/docker-compose.env'
+  moduleB:
+    image: moduleb
+    container_name: moduleb_container
+    ports:
+      - '8090:8090'
+    env_file:
+      - '${HOME}/docker-compose.env'

@@ -1,0 +1,71 @@
+kind: Service
+apiVersion: v1
+metadata:
+  annotations:
+    service.beta.kubernetes.io/azure-dns-label-name: springbootcidcpoc
+  name: springbootcidcpockubernetes-modulea
+spec:
+  selector:
+    app: springbootcidcpockubernetes-modulea
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8080
+  type: LoadBalancer
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: springbootcidcpockubernetes-modulea
+spec:
+  selector:
+      matchLabels:
+        app: springbootcidcpockubernetes-modulea
+  replicas: 3
+  template:
+    metadata:
+      labels:
+        app: springbootcidcpockubernetes-modulea
+    spec:
+      containers:
+        - name: springbootcidcpockubernetes-modulea
+          image: springbootcidcpocregistry.azurecr.io/modulea_container1:v1
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8080
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: springbootcidcpockubernetes-moduleb
+spec:
+  selector:
+    app: springbootcidcpockubernetes-moduleb
+    tier: backend
+  ports:
+  - protocol: TCP
+    port: 8090
+  type: ClusterIP
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: springbootcidcpockubernetes-moduleb
+spec:
+  selector:
+      matchLabels:
+        app: springbootcidcpockubernetes-moduleb
+        tier: backend
+  replicas: 3
+  template:
+    metadata:
+      labels:
+        app: springbootcidcpockubernetes-moduleb
+        tier: backend
+    spec:
+      containers:
+        - name: springbootcidcpockubernetes-moduleb
+          image: springbootcidcpocregistry.azurecr.io/moduleb_container1:v1
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8090            

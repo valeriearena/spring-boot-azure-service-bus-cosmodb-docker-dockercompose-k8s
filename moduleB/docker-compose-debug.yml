@@ -1,0 +1,9 @@
+version: '3'
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile_Debug
+    ports:
+      - "8090:8090"
+    command: java -jar /moduleB.jar

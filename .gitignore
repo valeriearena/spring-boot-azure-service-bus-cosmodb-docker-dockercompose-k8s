@@ -1,0 +1,14 @@
+.DS_Store
+
+*.class
+*.iml
+*.log
+
+.idea
+.gradle
+
+build/
+classes/
+out/
+data/
+

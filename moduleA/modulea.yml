@@ -1,0 +1,33 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: springbootcidcpockubernetes-modulea
+spec:
+  selector:
+    app: springbootcidcpockubernetes-modulea
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8080
+  type: LoadBalancer
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: springbootcidcpockubernetes-modulea
+spec:
+  selector:
+    matchLabels:
+      app: springbootcidcpockubernetes-modulea
+  replicas: 3
+  template:
+    metadata:
+      labels:
+        app: springbootcidcpockubernetes-modulea
+    spec:
+      containers:
+        - name: springbootcidcpockubernetes-modulea
+          image: springbootcidcpockubernetes-modulea
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 8080

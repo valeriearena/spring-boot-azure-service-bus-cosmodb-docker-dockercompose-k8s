@@ -1,0 +1,9 @@
+rootProject.name = 'banyan-spring-boot-cicd-poc'
+
+include ':moduleA'
+project(':moduleA').projectDir = new File('moduleA')
+
+include ':moduleB'
+project(':moduleB').projectDir = new File('moduleB')
+
+

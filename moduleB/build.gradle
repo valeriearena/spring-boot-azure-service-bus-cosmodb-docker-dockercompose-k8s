@@ -1,0 +1,158 @@
+// when building: gradle clean build -x test
+// when executing tests: gradle clean test -PspringProfileActive=test
+
+plugins {
+
+	// Spring Boot helps with managing dependencies, configuration, and deployment.
+	// Spring Boot does include dependencies called Spring starters (starter poms).
+	// The Spring Boot plugin requires Spring IO plugin and the java plugin.
+	id 'org.springframework.boot' version '2.2.6.RELEASE'
+
+	// When the Spring IO plugin is applied, the Spring Boot plugin automatically imports the Spring Boot parent POM,
+	// which allows you to manage dependencies without worrying about the versions and compatibility between them.
+	id 'io.spring.dependency-management' version '1.0.9.RELEASE'
+
+	// When the java plugin is applied a task for building an executable jar is automatically configured.
+	id 'java'
+
+	// Docker plugin.
+	// Jib builds the docker image and creates different layers for dependencies, resources, and application clasess.
+	// A layered image (vs single layer fat jar) is the recommended format so that the dependency and resource layer can be cached.
+	id 'com.google.cloud.tools.jib' version '2.0.0'
+}
+
+archivesBaseName = 'moduleb'
+group = 'com.banyan'
+version = '0.0.1'
+sourceCompatibility = 11
+
+repositories {
+	mavenCentral()
+}
+
+ext {
+	set('azureVersion', "2.2.0")
+}
+
+springProfileActive = System.getenv('SPRING_ACTIVE_PROFILE')
+if(springProfileActive == null){
+	springProfileActive = project.findProperty('springProfileActive')
+}
+
+dependencies {
+
+	// Spring starters list transitive dependencies with versions that have been tested together to save you time from putting libraries together.
+	// Spring starters also apply autoconfiguration with defaults based on dependencies in the classpath, annotations, and configurations in property file.
+	// Set logging level to DEBUG to see details on what is autoconfigured and what was not autoconfigured (find CONDITIONS EVALUATION REPORT in logs).
+
+	// https://docs.spring.io/spring-boot/docs/1.2.1.RELEASE/reference/htmlsingle/#using-boot-starter-poms
+	// https://repo1.maven.org/maven2/org/springframework/boot/spring-boot-dependencies/2.2.4.RELEASE/spring-boot-dependencies-2.2.4.RELEASE.pom
+
+	if(springProfileActive != null && springProfileActive.toString().equals('local')){
+		implementation 'org.springframework.boot:spring-boot-starter-activemq'
+	}
+	else{
+		implementation 'com.microsoft.azure:azure-servicebus-jms-spring-boot-starter:2.2.3'
+	}
+
+	implementation 'org.springframework.boot:spring-boot-starter-actuator'
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.springframework.boot:spring-boot-starter-data-mongodb'
+	implementation 'org.springframework.boot:spring-boot-starter-data-rest'
+
+	implementation 'com.google.code.gson:gson'
+	implementation 'com.github.javafaker:javafaker:1.0.2'
+
+	compileOnly 'org.projectlombok:lombok:1.18.8'
+	annotationProcessor 'org.projectlombok:lombok:1.18.8'
+
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testImplementation 'de.flapdoodle.embed:de.flapdoodle.embed.mongo:2.2.0'
+}
+
+dependencyManagement {
+	imports {
+		mavenBom "com.microsoft.azure:azure-spring-boot-bom:${azureVersion}"
+	}
+}
+
+test {
+	useJUnitPlatform()
+	testLogging {
+		events "passed", "skipped", "failed"
+	}
+}
+
+//The APR (Apache Portable Runtime) based Apache Tomcat Native library allows optimal performance in production environments.
+tasks.withType(org.springframework.boot.gradle.tasks.run.BootRun) {
+	systemProperty "java.library.path", "/usr/local/opt/tomcat-native/lib"
+}
+
+//tasks.register("pom") {
+//	println 'Converting gradle to pom!'
+//	pom {
+//		project {
+//			artifactId 'moduleb'
+//			groupId 'org.banyan'
+//			version '0.0.1'
+//			parent {
+//				groupId 'org.springframework.boot'
+//				artifactId 'spring-boot-starter-parent'
+//				version '2.2.5.RELEASE'
+//			}
+//		}
+//
+//	}
+//			.withXml
+//			{
+//				asNode()
+//						.appendNode('build')
+//						.appendNode('plugins')
+//						.with
+//								{
+//									with
+//											{
+//												appendNode('plugin')
+//														.with
+//																{
+//																	appendNode('groupId', 'org.springframework.boot')
+//																	appendNode('artifactId', 'spring-boot-maven-plugin')
+//																}
+//											}
+//									with
+//											{
+//												appendNode('plugin')
+//														.with
+//																{
+//																	appendNode('groupId', 'org.projectlombok')
+//																	appendNode('artifactId', 'lombok-maven-plugin')
+//																	appendNode('version', '1.18.12.0')
+//																	appendNode('executions')
+//																			.with
+//																					{
+//																						with
+//																								{
+//																									appendNode('execution')
+//																											.with
+//																													{
+//																														appendNode('phase', 'generate-sources')
+//																														appendNode('goals')
+//																																.with
+//																																		{
+//																																			with
+//																																					{
+//																																						appendNode('goal', 'delombok')
+//																																					}
+//																																		}
+//
+//																													}
+//																								}
+//																					}
+//
+//																}
+//
+//											}
+//								}
+//			}
+//			.writeTo("pom.xml")
+//}
