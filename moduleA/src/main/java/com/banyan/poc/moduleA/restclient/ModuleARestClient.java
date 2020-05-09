@@ -1,8 +1,8 @@
 package com.banyan.poc.moduleA.restclient;
 
 import com.banyan.poc.moduleA.bean.MessageBean;
+import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.client.reactive.ReactorClientHttpConnector;
 import org.springframework.stereotype.Component;
@@ -17,6 +17,7 @@ import reactor.netty.http.client.HttpClient;
  * is used in a synchronous manner and blocks until it receives a response.
  */
 @Slf4j
+@Data
 @Component
 public class ModuleARestClient {
 

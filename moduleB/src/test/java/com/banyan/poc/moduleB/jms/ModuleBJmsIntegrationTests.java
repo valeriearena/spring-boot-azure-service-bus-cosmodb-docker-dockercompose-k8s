@@ -1,4 +1,4 @@
-package com.banyan.poc.moduleB;
+package com.banyan.poc.moduleB.jms;
 
 import com.banyan.poc.moduleB.bean.MessageBean;
 import com.github.javafaker.BackToTheFuture;
@@ -17,7 +17,7 @@ import java.util.concurrent.TimeUnit;
 
 @SpringBootTest
 @ActiveProfiles("local")
-public class ModuleBJmsTests {
+public class ModuleBJmsIntegrationTests {
 
     @Autowired
     private JmsTemplate jmsTemplate;

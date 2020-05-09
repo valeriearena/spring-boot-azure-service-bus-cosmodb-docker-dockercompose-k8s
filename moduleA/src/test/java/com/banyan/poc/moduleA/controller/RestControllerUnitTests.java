@@ -13,36 +13,56 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.banyan.poc.moduleA;
+package com.banyan.poc.moduleA.controller;
 
+import com.banyan.poc.moduleA.bean.MessageBean;
+import com.banyan.poc.moduleA.controller.ModuleARestController;
+import com.banyan.poc.moduleA.service.MessageService;
+import com.github.javafaker.BackToTheFuture;
+import com.github.javafaker.Faker;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@SpringBootTest
+@ExtendWith(SpringExtension.class)
+@WebMvcTest(ModuleARestController.class)
 @ActiveProfiles("local")
-@AutoConfigureMockMvc
-public class ModuleARestControllerTests {
+public class RestControllerUnitTests {
 
 	@Autowired
 	private MockMvc mockMvc;
 
+	@MockBean
+	private MessageService messageService;
+
 	@Test
 	public void noParamGreetingShouldReturnDefaultMessage() throws Exception {
 
+		Mockito.when(messageService.postMessage()).thenReturn(getFakeMessage());
+
 		this.mockMvc
-				.perform(get("/name/helloworld"))
+				.perform(post("/name/store"))
 				.andDo(print()).andExpect(status().isOk())
 				.andExpect(jsonPath("$.backToTheFutureCharacter").exists());
 	}
 
-
+	private MessageBean getFakeMessage(){
+		Faker faker = new Faker();
+		BackToTheFuture backToTheFuture = faker.backToTheFuture();
+		MessageBean messageBean = new MessageBean();
+		messageBean.setBackToTheFutureCharacter(backToTheFuture.character());
+		messageBean.setBackToTheFutureQuote(backToTheFuture.quote());
+		return messageBean;
+	}
 }

@@ -28,22 +28,22 @@ import java.util.List;
 public class MessageDaoImpl implements MessageDao {
 
     @Autowired
-    private MongoOperations mongoOperations;
+    private MongoTemplate mongoTemplate;
 
     private static final String MESSAGES_COLLECTION = "messages";
 
     public List<MongoDBMessageModel> findAllFakeMessages(){
-        return mongoOperations.findAll(MongoDBMessageModel.class);
+        return mongoTemplate.findAll(MongoDBMessageModel.class);
     }
 
     public long findFakeMessageCountByCharacter(String character){
         Query query = new Query();
         query.addCriteria(Criteria.where("character").is(character));
-        return mongoOperations.count(query, MESSAGES_COLLECTION);
+        return mongoTemplate.count(query, MESSAGES_COLLECTION);
     }
 
     public long findFakeMessageCountByQuote(String quote){
         BasicQuery basicQuery = new BasicQuery("{ quote: \""+quote+"\"}");
-        return mongoOperations.count(basicQuery, MESSAGES_COLLECTION);
+        return mongoTemplate.count(basicQuery, MESSAGES_COLLECTION);
     }
 }

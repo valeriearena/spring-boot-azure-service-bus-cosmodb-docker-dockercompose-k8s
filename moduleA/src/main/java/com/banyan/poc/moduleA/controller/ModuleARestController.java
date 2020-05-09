@@ -10,11 +10,19 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.reactive.function.client.WebClientResponseException;
 
 /**
- * @RestController Tells Spring that all handler methods should have return value written to the body of response.
+ * @RestController is a convenience annotation that combines @Controller and @ResponseBody.
+ * @Controller tells Spring that DispatcherServlet should map incoming requests to /message should be mapped to ModuleARestController.
+ * @ResponseBody tells Spring that the return value of handler methods should be written to the body of response.
+ *
+ * 	The following maps an HTTP request to /name to the ModuleARestController.
+ * 	@RequestMapping(path = "name", produces = "application/json")
+ *
+ * 	This is a shortcut:
+ * 	@RequestMapping("/name")
  */
 @Slf4j
 @RestController
-@RequestMapping(path = "name", produces = "application/json")
+@RequestMapping("/name")
 public class ModuleARestController {
 
 	@Autowired

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.banyan.poc.moduleB;
+package com.banyan.poc.moduleB.controllers;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +30,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @ActiveProfiles("local")
 @AutoConfigureMockMvc
-public class ModuleBRestControllerTests {
+public class ModuleBRestControllerIntegrationTests {
 
 	@Autowired
 	private MockMvc mockMvc;

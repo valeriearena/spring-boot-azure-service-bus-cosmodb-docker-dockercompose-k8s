@@ -4,7 +4,9 @@
 plugins {
 
 	// Spring Boot helps with managing dependencies, configuration, and deployment.
-	// Spring Boot does include dependencies called Spring starters (starter poms).
+	// Spring Boot uses dependencies called Spring starters (starter poms).
+	// This plugin, allows you to manage the version for multiple dependencies at once.
+	// This means we can leave out versions for each of the starter dependencies.
 	// The Spring Boot plugin requires Spring IO plugin and the java plugin.
 	id 'org.springframework.boot' version '2.2.6.RELEASE'
 
@@ -19,6 +21,10 @@ plugins {
 	// Jib builds the docker image and creates different layers for dependencies, resources, and application clasess.
 	// A layered image (vs single layer fat jar) is the recommended format so that the dependency and resource layer can be cached.
 	id 'com.google.cloud.tools.jib' version '2.0.0'
+
+	// jacoco plugin to generate code coverage reports.
+	// gradle build jacocoTestReport
+	id 'jacoco'
 }
 
 archivesBaseName = 'moduleb'
@@ -32,6 +38,20 @@ repositories {
 
 ext {
 	set('azureVersion', "2.2.0")
+}
+
+jacoco {
+	toolVersion = '0.8.5'
+}
+
+jacocoTestReport {
+	group = "reporting"
+	description = "Generate Jacoco coverage reports after running tests."
+	reports {
+		xml.enabled true
+		html.enabled true
+		csv.enabled false
+	}
 }
 
 springProfileActive = System.getenv('SPRING_ACTIVE_PROFILE')

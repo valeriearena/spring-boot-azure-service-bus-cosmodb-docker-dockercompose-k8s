@@ -4,6 +4,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 /**
+ * ModuleBApplication is the Spring Boot launch class.
  * SpringApplication starts the Spring Boot application. The spring container gets started once SpringApplication.run() method is called.
  * @SpringBootApplication is a combination of @Configuration + @ComponentScan + @EnableAutoConfiguration.
  *

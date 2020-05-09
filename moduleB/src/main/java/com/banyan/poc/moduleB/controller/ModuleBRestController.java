@@ -10,11 +10,19 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.web.bind.annotation.*;
 
 /**
- * @RestController Tells Spring that all handler methods should have return value written to the body of response.
+ * @RestController is a convenience annotation that combines @Controller and @ResponseBody.
+ * @Controller tells Spring that DispatcherServlet should map incoming requests to /message should be mapped to ModuleBRestController.
+ * @ResponseBody tells Spring that the return value of handler methods should be written to the body of response.
+ *
+ * 	The following maps an HTTP request to /message to the ModuleBRestController.
+ * 	@RequestMapping(path = "message", produces = "application/json")
+ *
+ * 	This is a shortcut:
+ * 	@RequestMapping("/message")
  */
 @Slf4j
 @RestController
-@RequestMapping(path = "message", produces = "application/json")
+@RequestMapping("/message")
 public class ModuleBRestController {
 
 	@Autowired

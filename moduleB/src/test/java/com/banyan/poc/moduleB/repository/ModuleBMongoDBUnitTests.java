@@ -1,28 +1,38 @@
-package com.banyan.poc.moduleB;
+package com.banyan.poc.moduleB.repository;
 
 import com.banyan.poc.moduleB.bean.MessageBean;
 import com.banyan.poc.moduleB.model.MongoDBMessageModel;
-import com.banyan.poc.moduleB.repository.MessageDao;
-import com.banyan.poc.moduleB.repository.MongoDBMessageRepository;
 import com.github.javafaker.BackToTheFuture;
 import com.github.javafaker.Faker;
+import org.checkerframework.checker.units.qual.A;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.data.mongo.AutoConfigureDataMongo;
+import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Import;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.List;
 
-@SpringBootTest
+@ExtendWith(SpringExtension.class)
+@DataMongoTest
+@Import(MessageDaoImpl.class)
 @ActiveProfiles("local")
-public class ModuleBMongoDBTests {
+public class ModuleBMongoDBUnitTests {
 
     @Autowired
     private MongoDBMessageRepository repository;
 
     @Autowired
-    private MessageDao dao;
+    private MessageDaoImpl messageDaoImpl;
 
     @Test
     public void test() {
@@ -36,19 +46,19 @@ public class ModuleBMongoDBTests {
         Assertions.assertNotNull(result.getId());
 
         long totalListFromRepository = repository.count();
-        List<MongoDBMessageModel> totalListFromDao = dao.findAllFakeMessages();
+        List<MongoDBMessageModel> totalListFromDao = messageDaoImpl.findAllFakeMessages();
         Assertions.assertEquals(totalListFromRepository, totalListFromDao.size());
 
         List<MongoDBMessageModel> modelCharacterList = repository.findByBackToTheFutureCharacter(model.getBackToTheFutureCharacter());
         Assertions.assertTrue(modelCharacterList.size() >= 1);
 
-        long characterCount = dao.findFakeMessageCountByCharacter(model.getBackToTheFutureCharacter());
+        long characterCount = messageDaoImpl.findFakeMessageCountByCharacter(model.getBackToTheFutureCharacter());
         Assertions.assertEquals(characterCount, modelCharacterList.size());
 
         List<MongoDBMessageModel> modelQuoteList = repository.findByQuote(model.getBackToTheFutureQuote());
         Assertions.assertTrue(modelQuoteList.size() >= 1);
 
-        long quoteCount = dao.findFakeMessageCountByQuote(model.getBackToTheFutureQuote());
+        long quoteCount = messageDaoImpl.findFakeMessageCountByQuote(model.getBackToTheFutureQuote());
         Assertions.assertEquals(quoteCount, modelQuoteList.size());
 
     }

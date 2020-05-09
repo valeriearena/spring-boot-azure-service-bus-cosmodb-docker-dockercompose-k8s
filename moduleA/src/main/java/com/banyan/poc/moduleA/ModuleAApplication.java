@@ -4,6 +4,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 /**
+ * ModuleAApplication is the Spring Boot launch class.
  * SpringApplication starts the Spring Boot application. The spring container gets started once SpringApplication.run() method is called.
  * @SpringBootApplication is a combination of @Configuration + @ComponentScan + @EnableAutoConfiguration.
  *
@@ -17,7 +18,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  *      ServletWebServerApplicationContext::finishRefresh -> ServletWebServerApplicationContext::startWebServer -> TomcatWebServer::start
  */
 @SpringBootApplication
-// Minor change to kick off pipeline
 public class ModuleAApplication {
     public static void main(String[] args) {
         SpringApplication.run(ModuleAApplication.class, args);

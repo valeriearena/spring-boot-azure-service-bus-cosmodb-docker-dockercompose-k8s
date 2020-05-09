@@ -10,7 +10,7 @@ import com.banyan.poc.moduleB.bean.MessageBean;
 import com.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.jms.annotation.JmsListener;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import javax.jms.JMSException;
 import javax.jms.TextMessage;
@@ -20,7 +20,7 @@ import javax.jms.TextMessage;
  * @JmsListener is a method level annotation so we still need to use @Component
  */
 @Slf4j
-@Component
+@Service
 public class QueueConsumer {
 
     @JmsListener(destination = "${moduleb.jms.queue.name}", containerFactory = "${moduleb.jms.queue.connection.factory}")

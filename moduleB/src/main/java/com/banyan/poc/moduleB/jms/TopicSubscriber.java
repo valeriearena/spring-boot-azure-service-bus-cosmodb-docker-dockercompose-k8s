@@ -4,7 +4,7 @@ import com.banyan.poc.moduleB.bean.MessageBean;
 import com.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.jms.annotation.JmsListener;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import javax.jms.JMSException;
 import javax.jms.TextMessage;
@@ -13,7 +13,7 @@ import javax.jms.TextMessage;
  * @JmsListener Tells Spring to listen for JMS messages on the specified destination (push vs pull model of JMSTemplate::receive, which blocks.)
  */
 @Slf4j
-@Component
+@Service
 public class TopicSubscriber {
 
     @JmsListener(destination = "${moduleb.jms.topic.name}", containerFactory = "${moduleb.jms.topic.connection.factory}", subscription = "${moduleb.jms.topic.subscription}")
