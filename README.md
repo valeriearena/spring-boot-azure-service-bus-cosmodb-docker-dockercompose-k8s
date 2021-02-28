@@ -12,7 +12,7 @@ When deploying to Azure, the Spring Boot app integrates with Azure Service Bus a
 3. Module B will return the message to Module A. <br/>
 ```curl -X POST http://localhost:8080/name/store```
 
-* When the following curl is executed: 
+* When executing the following curl: 
 1. Module A will call Module B. 
 2. Module B will generate a message and save it in MongoDB.
 3. Module B will return the message to Module A.
